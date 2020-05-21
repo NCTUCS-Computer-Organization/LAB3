@@ -4,19 +4,21 @@ module ALU_Ctrl(
         funct_i,
         ALUOp_i,
         ALUCtrl_o,
+	jr_o
         );
 
 //I/O ports
 input      [6-1:0] funct_i; //function code
 input      [3-1:0] ALUOp_i; // aluop
 output     [4-1:0] ALUCtrl_o; // 4 bit alu_controi to alu
-
+output     jr_o;
 //Internal Signals
 reg        [4-1:0] ALUCtrl_o;
-
+reg			jr_o;
 //Select exact operation
 
 always @( * ) begin
+	jr_o <= 1'b0;
 	if(ALUOp_i==3'b000)begin
 		if(funct_i==6'b100001)begin //addu 		// ok
 			ALUCtrl_o <= 4'b0010; //ADD
@@ -43,7 +45,11 @@ always @( * ) begin
 			ALUCtrl_o <= 4'b1101;  //sLL		
 		end
 		else if(funct_i==6'b011000)begin
-			ALUCtrl_o <= 4'b0100;		
+			ALUCtrl_o <= 4'b0100; //mul
+		end
+		else if(funct_i==6'b001000)begin
+			 ALUCtrl_o <= 4'b0010;
+			 jr_o <= 1'b1;	
 		end
 	end	
 	else if(ALUOp_i==3'b001)begin //addi

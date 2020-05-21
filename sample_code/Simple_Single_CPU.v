@@ -30,6 +30,9 @@ wire zero_alu;
 wire [32-1:0] data_after_left2;
 wire [32-1:0] branch_target_addr;
 
+wire [32-1:0] result_branch_target_addr_or_pc_plus_4;
+wire jr;
+
 ProgramCounter PC(
     .clk_i(clk_i),
     .rst_i (rst_i),
@@ -79,7 +82,8 @@ Decoder Decoder(
 ALU_Ctrl AC(
     .funct_i(instruction[5:0]),
     .ALUOp_i(ALUOp),
-    .ALUCtrl_o(AlU_control)
+    .ALUCtrl_o(AlU_control),
+	.jr_o(jr)
     );
 
 Sign_Extend SE(
@@ -120,7 +124,21 @@ MUX_2to1 #(.size(32)) Mux_PC_Source(
     .data0_i(pc_plus_4),
     .data1_i(branch_target_addr),
     .select_i(zero_alu & branch),
+    .data_o(result_branch_target_addr_or_pc_plus_4)
+    );
+
+
+//assign jr_or_out = (instruction[5:0]==6'b001000 && instruction[31:26]==6'b000000)?1'b1:1'b0;
+
+MUX_2to1 #(.size(32)) Jr(
+    .data0_i(result_branch_target_addr_or_pc_plus_4),
+    .data1_i(RS_data),
+	//.data0_i(RS_data),
+	//.data1_i(result_branch_target_addr_or_pc_plus_4),
+    .select_i(jr),
     .data_o(pc_in)
     );
+
+
 
 endmodule
