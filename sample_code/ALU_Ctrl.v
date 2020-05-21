@@ -4,7 +4,7 @@ module ALU_Ctrl(
         funct_i,
         ALUOp_i,
         ALUCtrl_o,
-	jr_o
+		jr_o
         );
 
 //I/O ports
@@ -69,6 +69,9 @@ always @( * ) begin
 	end
 	else if(ALUOp_i==3'b111)begin
 		ALUCtrl_o <= 4'b0001; //ori		//ok
+	end
+	else if(ALUOp_i==3'b101)begin
+		ALUCtrl_o <= 4'b0010; // lw sw	
 	end
 end
 

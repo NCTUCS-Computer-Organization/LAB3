@@ -32,6 +32,12 @@ wire [32-1:0] branch_target_addr;
 
 wire [32-1:0] result_branch_target_addr_or_pc_plus_4;
 wire jr;
+wire mem_write;
+wire mem_read;
+wire mem_reg;
+wire jump;
+wire [32-1:0] result_from_mem;
+wire [32-1:0] result_from_mux_mem_alu;
 
 ProgramCounter PC(
     .clk_i(clk_i),
@@ -64,7 +70,7 @@ Reg_File RF(
     .RSaddr_i(instruction[25:21]) ,
     .RTaddr_i(instruction[20:16]) ,
     .RDaddr_i(number_WriteReg_fromMux) , //from mux before
-    .RDdata_i(RD_data)  ,
+    .RDdata_i(result_from_mux_mem_alu)  ,
     .RegWrite_i (RegWrite),
     .RSdata_o(RS_data) ,   //output
     .RTdata_o(RT_data)	   //output	
@@ -76,7 +82,11 @@ Decoder Decoder(
     .ALU_op_o(ALUOp),
     .ALUSrc_o(ALUSrc),
     .RegDst_o(RegDst),
-    .Branch_o(branch)
+    .Branch_o(branch),
+	.mem_write_o(mem_write),
+	.mem_read_o(mem_read),
+	.mem_to_reg(mem_reg),
+	.jump_o(jump)
     );
 
 ALU_Ctrl AC(
@@ -124,12 +134,13 @@ MUX_2to1 #(.size(32)) Mux_PC_Source(
     .data0_i(pc_plus_4),
     .data1_i(branch_target_addr),
     .select_i(zero_alu & branch),
-    .data_o(result_branch_target_addr_or_pc_plus_4)
+    //.data_o(result_branch_target_addr_or_pc_plus_4)
+	.data_o(pc_in)
     );
 
 
 //assign jr_or_out = (instruction[5:0]==6'b001000 && instruction[31:26]==6'b000000)?1'b1:1'b0;
-
+/*
 MUX_2to1 #(.size(32)) Jr(
     .data0_i(result_branch_target_addr_or_pc_plus_4),
     .data1_i(RS_data),
@@ -138,7 +149,47 @@ MUX_2to1 #(.size(32)) Jr(
     .select_i(jr),
     .data_o(pc_in)
     );
+*/
+
+Data_Memory Data_mem(
+	.clk_i(clk_i),
+	.addr_i(RD_data),
+	.data_i(RT_data),
+	.MemRead_i(mem_read),
+	.MemWrite_i(mem_write),
+	.data_o(result_from_mem)	
+	);
+
+MUX_2to1 #(.size(32)) Mux_mem_or_alu(
+    .data0_i(result_from_mem),
+    .data1_i(RD_data),
+    .select_i(mem_reg),
+    .data_o(result_from_mux_mem_alu)
+    );
+
 
 
 
 endmodule
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
