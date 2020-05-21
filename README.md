@@ -2,7 +2,7 @@
 
 ## R type
 - [x] sll
-- [ ] mul
+- [x] mul
 - [ ] jr
 
 ## I type
@@ -34,7 +34,8 @@
 | 1111              | SRAV  |
 | 1011              | Lui   |
 | 0011              | beq   |
-| 1101              | SLL      |
+| 1101              | SLL   |
+| 0100              | MUL   |
 | 1001              | bne   |
 
 
