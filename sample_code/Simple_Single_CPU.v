@@ -36,9 +36,8 @@ wire mem_write;
 wire mem_read;
 wire mem_reg;
 wire jump;
-wire [32-1:0] result_from_mem;
 wire [32-1:0] result_from_mux_mem_alu;
-
+wire [32-1:0] result_from_mem;
 ProgramCounter PC(
     .clk_i(clk_i),
     .rst_i (rst_i),
@@ -70,7 +69,9 @@ Reg_File RF(
     .RSaddr_i(instruction[25:21]) ,
     .RTaddr_i(instruction[20:16]) ,
     .RDaddr_i(number_WriteReg_fromMux) , //from mux before
-    .RDdata_i(result_from_mux_mem_alu)  ,
+	.RDdata_i(RD_data),    
+	//.RDdata_i(result_from_mem),
+	//.RDdata_i(result_from_mux_mem_alu) ,
     .RegWrite_i (RegWrite),
     .RSdata_o(RS_data) ,   //output
     .RTdata_o(RT_data)	   //output	
@@ -139,6 +140,8 @@ MUX_2to1 #(.size(32)) Mux_PC_Source(
     );
 
 
+
+
 //assign jr_or_out = (instruction[5:0]==6'b001000 && instruction[31:26]==6'b000000)?1'b1:1'b0;
 /*
 MUX_2to1 #(.size(32)) Jr(
@@ -151,7 +154,7 @@ MUX_2to1 #(.size(32)) Jr(
     );
 */
 
-
+/*
 Data_Memory Data_mem(
 	.clk_i(clk_i),
 	.addr_i(RD_data),
@@ -160,7 +163,8 @@ Data_Memory Data_mem(
 	.MemWrite_i(mem_write),
 	.data_o(result_from_mem)	
 	);
-
+*/
+/*
 MUX_2to1 #(.size(32)) Mux_mem_or_alu(
     .data0_i(result_from_mem),
     .data1_i(RD_data),
@@ -168,6 +172,7 @@ MUX_2to1 #(.size(32)) Mux_mem_or_alu(
     .data_o(result_from_mux_mem_alu)
     );
 
+*/
 
 
 

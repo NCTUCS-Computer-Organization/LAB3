@@ -33,6 +33,9 @@ always @(*)begin
 	if(ctrl_i==4'b0010)begin //ADD
 		result_o <= (src1_i + src2_i);
 	end
+	else if(ctrl_i==4'b1000)begin // ADD signed
+		result_o <= (tmp_src1+tmp_src2);	
+	end
 	else if(ctrl_i==4'b0110)begin //SUB
 		result_o <= (src1_i - src2_i);
 	end
@@ -71,7 +74,7 @@ always @(*)begin
 		result_o <= (src1_i - src2_i);	
 	end
 	else if(ctrl_i==4'b0100)begin // mul
-		result_o <= (src1_i*src2_i);
+		result_o <= (tmp_src1*tmp_src2);
 	end
 	
 

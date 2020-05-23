@@ -47,7 +47,7 @@ always @( * ) begin
 		else if(funct_i==6'b011000)begin
 			ALUCtrl_o <= 4'b0100; //mul
 		end
-		else if(funct_i==6'b001000)begin
+		else if(funct_i==6'b001000)begin //jr
 			 ALUCtrl_o <= 4'b0010;
 			 jr_o <= 1'b1;	
 		end
@@ -71,7 +71,7 @@ always @( * ) begin
 		ALUCtrl_o <= 4'b0001; //ori		//ok
 	end
 	else if(ALUOp_i==3'b101)begin
-		ALUCtrl_o <= 4'b0010; // lw sw	
+		ALUCtrl_o <= 4'b1000; // lw sw	
 	end
 end
 

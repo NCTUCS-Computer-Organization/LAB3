@@ -21,6 +21,7 @@ output [3-1:0] ALU_op_o;
 output         ALUSrc_o;
 output         RegDst_o;
 output         Branch_o;
+
 output 		   mem_write_o;
 output 		   mem_read_o;
 output         mem_to_reg;
@@ -32,6 +33,7 @@ reg            ALUSrc_o;
 reg            RegWrite_o;
 reg            RegDst_o;
 reg            Branch_o;
+
 reg 		   mem_write_o;
 reg 		   mem_read_o;
 reg            mem_to_reg;
@@ -117,6 +119,7 @@ always @( * ) begin
 		jump_o <= 0;
 	end
 	else if(instr_op_i==35)begin // load word
+		$display("hi");
 		RegWrite_o <= 1;
 		ALU_op_o   <= 3'b101;
 		ALUSrc_o   <= 1;
