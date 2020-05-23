@@ -8,8 +8,8 @@
 ## I type
 - [ ] lw
 - [ ] sw
-- [ ] blez
-- [ ] bgtz
+- [x] blez
+- [x] bgtz
 
 ## J type
 - [ ] j
