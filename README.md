@@ -27,6 +27,7 @@
 | 0001              | OR          |
 | 1000              | ADD(signed) |
 | 0010              | ADD         |
+| 1010              | SUB(signed) |
 | 0110              | SUB         |
 | 0111              | SLT         |
 | 0101              | SLTiu       |
