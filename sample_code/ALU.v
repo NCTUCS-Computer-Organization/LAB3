@@ -34,10 +34,13 @@ always @(*)begin
 		result_o <= (src1_i + src2_i);
 	end
 	else if(ctrl_i==4'b1000)begin // ADD signed
-		result_o <= (tmp_src1+tmp_src2);	
+		result_o <= (tmp_src1 + tmp_src2);	
 	end
 	else if(ctrl_i==4'b0110)begin //SUB
 		result_o <= (src1_i - src2_i);
+	end
+	else if(ctrl_i==4'b1010)begin
+		result_o <= (tmp_src1 - tmp_src2);	
 	end
 	else if(ctrl_i==4'b0000)begin //AND
 		result_o <= (src1_i & src2_i);
@@ -67,22 +70,28 @@ always @(*)begin
 	else if(ctrl_i==4'b1011)begin //lui
 		result_o <= src2_i<<16;	
 	end
-	else if(ctrl_i==4'b0011)begin //beq
+	/*else if(ctrl_i==4'b0011)begin //beq
 		result_o <= (src1_i - src2_i);	
 	end
 	else if(ctrl_i==4'b1001)begin //bne
 		result_o <= (src1_i - src2_i);	
-	end
+	end*/
 	else if(ctrl_i==4'b0100)begin // mul
 		result_o <= (tmp_src1*tmp_src2);
 	end
 	
-
+	/* lab2 version
 	if(ctrl_i==4'b1001)begin // bne:if not equal->result!=0->but zero should=0
 		zero_o <= (result_o==0)?1'b0:1'b1;
 	end
 	else begin
 		zero_o <= (result_o==0)?1'b1:1'b0;
+	end*/
+	if(result_o==0)begin // bne:if not equal->result!=0->but zero should=0
+		zero_o <= 1'b1;
+	end
+	else begin
+		zero_o <= 1'b0;
 	end
 end
 

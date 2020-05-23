@@ -31,6 +31,7 @@ wire [32-1:0] data_after_left2;
 wire [32-1:0] branch_target_addr;
 
 wire [32-1:0] result_branch_target_addr_or_pc_plus_4;
+
 wire jr;
 wire mem_write;
 wire mem_read;
@@ -38,6 +39,14 @@ wire mem_reg;
 wire jump;
 wire [32-1:0] result_from_mux_mem_alu;
 wire [32-1:0] result_from_mem;
+wire [32-1:0] branch_or_pcplus4;
+wire [32-1:0] jmp_address;
+wire [32-1:0] tmp_jmp_address;
+wire regdst2;
+wire [5-1:0] RT;
+wire [2-1:0] branch_type;
+wire branch_type_or_not;
+
 ProgramCounter PC(
     .clk_i(clk_i),
     .rst_i (rst_i),
@@ -56,6 +65,14 @@ Instr_Memory IM(
     .instr_o(instruction)
     );
 
+/*
+MUX_2to1 #(.size(5)) Mux_RT_or_zero(
+    .data0_i(instruction[20:16]),
+    .data1_i(5'b0), // for blez bgtz 讓rs減 "0"
+    .select_i(regdst2),
+    .data_o(RT) 
+    );
+*/
 MUX_2to1 #(.size(5)) Mux_Write_Reg(
     .data0_i(instruction[20:16]),
     .data1_i(instruction[15:11]),
@@ -87,7 +104,9 @@ Decoder Decoder(
 	.mem_write_o(mem_write),
 	.mem_read_o(mem_read),
 	.mem_to_reg(mem_reg),
-	.jump_o(jump)
+	.jump_o(jump),
+	.regdst2_o(regdst2),
+	.branch_type_o(branch_type)
     );
 
 ALU_Ctrl AC(
@@ -131,12 +150,24 @@ Shift_Left_Two_32 Shifter(
     );
 //choose next instr'address
 
+Branch_type branchtype(
+	.Branch_type_i(branch_type),
+	.Zero_i(zero_alu),
+	.ALU_result_i(RD_data[31]),
+	.branch_type_result_o(branch_type_or_not)
+	);
+
+/*always@(*)begin
+	$display("here:%d %d",branch_type_or_not,branch);
+end*/
+
 MUX_2to1 #(.size(32)) Mux_PC_Source(
     .data0_i(pc_plus_4),
     .data1_i(branch_target_addr),
-    .select_i(zero_alu & branch),
+    .select_i(branch_type_or_not & branch),
     //.data_o(result_branch_target_addr_or_pc_plus_4)
 	.data_o(pc_in)
+	//.data_o(branch_or_pcplus4)
     );
 
 
@@ -163,17 +194,23 @@ Data_Memory Data_mem(
 	.MemWrite_i(mem_write),
 	.data_o(result_from_mem)	
 	);
-*/
-/*
+
+
 MUX_2to1 #(.size(32)) Mux_mem_or_alu(
     .data0_i(result_from_mem),
     .data1_i(RD_data),
     .select_i(mem_reg),
     .data_o(result_from_mux_mem_alu)
     );
-
 */
+/*
+assign tmp_jmp_address={{6{1'b0}},instrction[25:0]}; //add: pc 4bit+26bit
 
+Shift_Left_Two_32 shift_jmp_address(
+	.data_i(tmp_jmp_address);
+	.data_o(jmp_address);
+	);
+*/
 
 
 endmodule

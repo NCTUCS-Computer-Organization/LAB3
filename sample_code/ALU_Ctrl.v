@@ -12,6 +12,7 @@ input      [6-1:0] funct_i; //function code
 input      [3-1:0] ALUOp_i; // aluop
 output     [4-1:0] ALUCtrl_o; // 4 bit alu_controi to alu
 output     jr_o;
+
 //Internal Signals
 reg        [4-1:0] ALUCtrl_o;
 reg			jr_o;
@@ -58,11 +59,14 @@ always @( * ) begin
 	else if(ALUOp_i==3'b010)begin
 		ALUCtrl_o <= 4'b0101; //sltiu
 	end
-	else if(ALUOp_i==3'b110)begin
+	/*else if(ALUOp_i==3'b110)begin
 		ALUCtrl_o <= 4'b1001; //bne
 	end
 	else if(ALUOp_i==3'b100)begin
 		ALUCtrl_o <= 4'b0011; //beq
+	end*/
+	else if(ALUOp_i==3'b110)begin //branch
+		ALUCtrl_o <= 4'b1010;
 	end
 	else if(ALUOp_i==3'b011)begin
 		ALUCtrl_o <= 4'b1011; //LUI		//ok
