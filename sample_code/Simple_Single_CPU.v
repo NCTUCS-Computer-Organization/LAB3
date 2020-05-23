@@ -156,11 +156,11 @@ Branch_type branchtype(
 	.ALU_result_i(RD_data[31]),
 	.branch_type_result_o(branch_type_or_not)
 	);
-
-/*always@(*)begin
+/*
+always@(*)begin
 	$display("here:%d %d",branch_type_or_not,branch);
-end*/
-
+end
+*/
 MUX_2to1 #(.size(32)) Mux_PC_Source(
     .data0_i(pc_plus_4),
     .data1_i(branch_target_addr),

@@ -165,27 +165,27 @@ always @( * ) begin
 	else if(instr_op_i==6)begin //blez
 		RegWrite_o <= 0;
 		ALU_op_o   <= 3'b110;
-		ALUSrc_o   <= 1;	
+		ALUSrc_o   <= 0;	
 		RegDst_o   <= 0;
 		Branch_o   <= 1; 
 		mem_write_o <= 0;
 		mem_read_o <= 0;
 		mem_to_reg <= 0;
 		jump_o <= 0;
-		regdst2_o <= 1;
+		regdst2_o <= 0;
 		branch_type_o <= 2'b10;
 	end
 	else if(instr_op_i==7)begin // bgtz
 		RegWrite_o <= 0;
 		ALU_op_o   <= 3'b110;
-		ALUSrc_o   <= 1;	
+		ALUSrc_o   <= 0;	
 		RegDst_o   <= 0;
 		Branch_o   <= 1; 
 		mem_write_o <= 0;
 		mem_read_o <= 0;
 		mem_to_reg <= 0;
 		jump_o <= 0;
-		regdst2_o <= 1;
+		regdst2_o <= 0;
 		branch_type_o <= 2'b11;
 	end
 end

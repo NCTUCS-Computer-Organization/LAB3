@@ -14,20 +14,20 @@ input ALU_result_i;
 output branch_type_result_o;
 reg branch_type_result_o;
 always @(*) begin
-	if(Branch_type_i==0)begin //bne
+	if(Branch_type_i==0)begin //beq
 		if(Zero_i==1)begin
-			branch_type_result_o <= 0;			
+			branch_type_result_o <= 1;			
 		end
 		else begin
-			branch_type_result_o <= 1;		
+			branch_type_result_o <= 0;		
 		end
 	end
-	else if(Branch_type_i==1)begin //beq
+	else if(Branch_type_i==1)begin //bne
 		if(Zero_i==1)begin
-			branch_type_result_o <= 1;	
+			branch_type_result_o <= 0;	
 		end
 		else begin
-			branch_type_result_o <= 0;
+			branch_type_result_o <= 1;
 		end
 	end
 	else if(Branch_type_i==2)begin //blez <=
@@ -39,7 +39,7 @@ always @(*) begin
 		end
 	end
 	else if(Branch_type_i==3)begin
-		if(ALU_result_i==0 && Zero_i!=0)begin
+		if(ALU_result_i==0 && Zero_i!=1)begin
 			branch_type_result_o <= 1;
 		end
 		else begin
