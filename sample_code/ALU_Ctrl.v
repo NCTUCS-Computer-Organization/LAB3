@@ -49,7 +49,7 @@ always @( * ) begin
 			ALUCtrl_o <= 4'b0100; //mul
 		end
 		else if(funct_i==6'b001000)begin //jr
-			 ALUCtrl_o <= 4'b0010;
+			 ALUCtrl_o <= 4'b0000;
 			 jr_o <= 1'b1;	
 		end
 	end	

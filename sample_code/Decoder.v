@@ -139,7 +139,7 @@ always @( * ) begin
 	end
 	else if(instr_op_i==35)begin // load word
 		RegWrite_o <= 1;
-		ALU_op_o   <= 3'b101;
+		ALU_op_o   <= 3'b001;
 		ALUSrc_o   <= 1;
 		RegDst_o   <= 0;
 		Branch_o   <= 0;
