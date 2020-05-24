@@ -3,7 +3,7 @@
 ## R type
 - [x] sll
 - [x] mul
-- [ ] jr
+- [x] jr
 
 ## I type
 - [ ] lw
