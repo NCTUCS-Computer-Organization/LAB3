@@ -12,8 +12,8 @@
 - [x] bgtz
 
 ## J type
-- [ ] j
-- [ ] jal
+- [x] j
+- [x] jal
 
 ## Bubble Sort
 - [ ] Bubble Sort
