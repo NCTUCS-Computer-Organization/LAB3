@@ -42,7 +42,6 @@ wire [32-1:0] result_from_mem;
 wire [32-1:0] branch_or_pcplus4;
 wire [32-1:0] jmp_address;
 wire [32-1:0] tmp_jmp_address;
-wire regdst2;
 wire [5-1:0] RT;
 wire [2-1:0] branch_type;
 wire branch_type_or_not;
@@ -105,7 +104,6 @@ Decoder Decoder(
 	.mem_read_o(mem_read),
 	.mem_to_reg(mem_reg),
 	.jump_o(jump),
-	.regdst2_o(regdst2),
 	.branch_type_o(branch_type)
     );
 

@@ -11,7 +11,6 @@ module Decoder(
 	mem_read_o,
 	mem_to_reg,
 	jump_o,
-	regdst2_o,
 	branch_type_o
     );
 
@@ -28,7 +27,6 @@ output 		   mem_write_o;
 output 		   mem_read_o;
 output         mem_to_reg;
 output         jump_o;
-output 		   regdst2_o;
 output [2-1:0] branch_type_o;
 //Internal Signals
 reg    [3-1:0] ALU_op_o;
@@ -41,7 +39,6 @@ reg 		   mem_write_o;
 reg 		   mem_read_o;
 reg            mem_to_reg;
 reg            jump_o;
-reg			   regdst2_o;
 reg			   branch_type_o;
 
 always @( * ) begin
@@ -55,7 +52,6 @@ always @( * ) begin
 		mem_read_o <= 0;
 		mem_to_reg <= 0;
 		jump_o <= 0;
-		regdst2_o <= 0;
 		branch_type_o <= 2'b0;
 	end
 	else if(instr_op_i== 8)begin  //addi
@@ -68,7 +64,6 @@ always @( * ) begin
 		mem_read_o <= 0;
 		mem_to_reg <= 0;
 		jump_o <= 0;
-		regdst2_o <= 0;
 		branch_type_o <= 2'b0;
 	end
 	else if(instr_op_i== 11)begin //sltiu
@@ -81,7 +76,6 @@ always @( * ) begin
 		mem_read_o <= 0;
 		mem_to_reg <= 0;
 		jump_o <= 0;
-		regdst2_o <= 0;
 		branch_type_o <= 2'b0;
 	end	
 	else if(instr_op_i== 4)begin //beq
@@ -94,7 +88,6 @@ always @( * ) begin
 		mem_read_o <= 0;
 		mem_to_reg <= 0;		
 		jump_o <= 0;
-		regdst2_o <= 0;
 		branch_type_o <= 2'b0;
 	end	
 	else if(instr_op_i== 15)begin //lui
@@ -107,7 +100,6 @@ always @( * ) begin
 		mem_read_o <= 0;
 		mem_to_reg <= 0;
 		jump_o <= 0;
-		regdst2_o <= 0;
 		branch_type_o <= 2'b0;
 	end	
 	else if(instr_op_i== 13)begin // ori
@@ -120,7 +112,6 @@ always @( * ) begin
 		mem_read_o <= 0;
 		mem_to_reg <= 0;
 		jump_o <= 0;
-		regdst2_o <= 0;
 		branch_type_o <= 2'b0;
 	end	
 	else if(instr_op_i==5)begin //bne
@@ -133,7 +124,6 @@ always @( * ) begin
 		mem_read_o <= 0;
 		mem_to_reg <= 0;
 		jump_o <= 0;
-		regdst2_o <= 0;
 		branch_type_o <= 2'b1;
 	end
 	else if(instr_op_i==35)begin // load word
@@ -146,7 +136,6 @@ always @( * ) begin
 		mem_read_o <= 1;
 		mem_to_reg <= 0; // 0: result from memory
 		jump_o <= 0;
-		regdst2_o <= 0;
 		branch_type_o <= 2'b0;
 	end
 	else if(instr_op_i==43)begin // save word
@@ -159,7 +148,6 @@ always @( * ) begin
 		mem_read_o <= 0;
 		mem_to_reg <= 1; // 1: result from alu 
 		jump_o <= 0;
-		regdst2_o <= 0;
 		branch_type_o <= 2'b0;
 	end
 	else if(instr_op_i==6)begin //blez
@@ -172,7 +160,6 @@ always @( * ) begin
 		mem_read_o <= 0;
 		mem_to_reg <= 0;
 		jump_o <= 0;
-		regdst2_o <= 0;
 		branch_type_o <= 2'b10;
 	end
 	else if(instr_op_i==7)begin // bgtz
@@ -185,7 +172,6 @@ always @( * ) begin
 		mem_read_o <= 0;
 		mem_to_reg <= 0;
 		jump_o <= 0;
-		regdst2_o <= 0;
 		branch_type_o <= 2'b11;
 	end
 end
