@@ -45,6 +45,10 @@ wire [32-1:0] tmp_jmp_address;
 wire [5-1:0] RT;
 wire [2-1:0] branch_type;
 wire branch_type_or_not;
+wire [32-1:0] branch_address;
+wire jal;
+wire [5-1:0] tmp_number_WriteReg_fromMux;
+wire [32-1:0] write_data2;
 
 ProgramCounter PC(
     .clk_i(clk_i),
@@ -76,7 +80,21 @@ MUX_2to1 #(.size(5)) Mux_Write_Reg(
     .data0_i(instruction[20:16]),
     .data1_i(instruction[15:11]),
     .select_i(RegDst),
+    .data_o(tmp_number_WriteReg_fromMux) 
+    );
+
+MUX_2to1 #(.size(5)) Mux_Write_Reg_or_jal(
+    .data0_i(tmp_number_WriteReg_fromMux),
+    .data1_i(5'd31),
+    .select_i(jal),
     .data_o(number_WriteReg_fromMux) 
+    );
+
+MUX_2to1 #(.size(32)) write_data(
+    .data0_i(RD_data),
+    .data1_i(pc_plus_4),
+    .select_i(jal),
+    .data_o(write_data2) 
     );
 
 Reg_File RF(
@@ -85,7 +103,8 @@ Reg_File RF(
     .RSaddr_i(instruction[25:21]) ,
     .RTaddr_i(instruction[20:16]) ,
     .RDaddr_i(number_WriteReg_fromMux) , //from mux before
-	.RDdata_i(RD_data),    
+	//.RDdata_i(RD_data),    
+	.RDdata_i(write_data2),	
 	//.RDdata_i(result_from_mem),
 	//.RDdata_i(result_from_mux_mem_alu) ,
     .RegWrite_i (RegWrite),
@@ -104,7 +123,8 @@ Decoder Decoder(
 	.mem_read_o(mem_read),
 	.mem_to_reg(mem_reg),
 	.jump_o(jump),
-	.branch_type_o(branch_type)
+	.branch_type_o(branch_type),
+	.jal_o(jal)
     );
 
 ALU_Ctrl AC(
@@ -164,10 +184,27 @@ MUX_2to1 #(.size(32)) Mux_PC_Source(
     .data1_i(branch_target_addr),
     .select_i(branch_type_or_not & branch),
     //.data_o(result_branch_target_addr_or_pc_plus_4)
-	.data_o(pc_in)
+	.data_o(branch_address)
 	//.data_o(branch_or_pcplus4)
     );
 
+wire [32-1:0] tmp_jump_address;
+wire [32-1:0] jump_address;
+wire [32-1:0] tmp;
+assign tmp = {instruction[25:0],6'b0};
+
+Shift_Left_Two_32 Jump_address(
+    .data_i(tmp),
+    .data_o(tmp_jump_address)
+    );
+
+assign jump_address = {pc_plus_4[31:28],tmp_jump_address[31:6]};
+MUX_2to1 #(.size(32)) Mux_jump(
+    .data0_i(branch_address),
+    .data1_i(jump_address),
+    .select_i(jump),
+	.data_o(pc_in)
+    );
 
 
 
