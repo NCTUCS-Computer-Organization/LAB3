@@ -6,8 +6,8 @@
 - [x] jr
 
 ## I type
-- [ ] lw
-- [ ] sw
+- [x] lw
+- [x] sw
 - [x] blez
 - [x] bgtz
 
