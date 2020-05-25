@@ -37,8 +37,8 @@ wire mem_write;
 wire mem_read;
 wire mem_reg;
 wire jump;
-wire [32-1:0] result_from_mux_mem_alu;
-wire [32-1:0] result_from_mem;
+wire [32-1:0] result_mux_mem_alu;
+wire [32-1:0] result_mem;
 wire [32-1:0] branch_or_pcplus4;
 wire [32-1:0] jmp_address;
 wire [32-1:0] tmp_jmp_address;
@@ -93,8 +93,9 @@ MUX_2to1 #(.size(5)) Mux_Write_Reg_or_jal(
     );
 
 MUX_2to1 #(.size(32)) write_data(
-    .data0_i(RD_data),
-	//.data0_i(result_from_mux_mem_alu),  
+    //.data0_i(RD_data),
+	.data0_i(result_mux_mem_alu),  
+	//.data0_i(result_mem),
 	.data1_i(pc_plus_4),
     .select_i(jal),
     .data_o(write_data2) 
@@ -195,7 +196,7 @@ MUX_2to1 #(.size(32)) Mux_PC_Source(
 wire [32-1:0] tmp_jump_address;
 wire [32-1:0] jump_address;
 wire [32-1:0] tmp;
-assign tmp = {instruction[25:0],6'b0};
+assign tmp = {6'b0,instruction[25:0]};
 
 
 Shift_Left_Two_32 Jump_address(
@@ -204,7 +205,7 @@ Shift_Left_Two_32 Jump_address(
     );
 
 
-assign jump_address = {pc_plus_4[31:28],tmp_jump_address[31:6]};
+assign jump_address = {pc_plus_4[31:28],tmp_jump_address[27:0]};
 MUX_2to1 #(.size(32)) Mux_jump(
     .data0_i(branch_address),
     .data1_i(jump_address),
@@ -227,24 +228,24 @@ MUX_2to1 #(.size(32)) Jrr(
     );
 
 
-/*
-Data_Memory Data_mem(
+
+Data_Memory Data_Memory(
 	.clk_i(clk_i),
 	.addr_i(RD_data),
 	.data_i(RT_data),
 	.MemRead_i(mem_read),
 	.MemWrite_i(mem_write),
-	.data_o(result_from_mem)	
+	.data_o(result_mem)	
 	);
 
 
 MUX_2to1 #(.size(32)) Mux_mem_or_alu(
-    .data0_i(result_from_mem),
-    .data1_i(RD_data),
+    .data0_i(RD_data),
+    .data1_i(result_mem),
     .select_i(mem_reg),
-    .data_o(result_from_mux_mem_alu)
+    .data_o(result_mux_mem_alu)
     );
-*/
+
 /*
 assign tmp_jmp_address={{6{1'b0}},instrction[25:0]}; //add: pc 4bit+26bit
 

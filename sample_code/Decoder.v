@@ -42,7 +42,7 @@ reg 		   mem_write_o;
 reg 		   mem_read_o;
 reg            mem_to_reg;
 reg            jump_o;
-reg			   branch_type_o;
+reg	   [2-1:0] branch_type_o;
 reg			   jal_o;
 
 always @( * ) begin
@@ -139,13 +139,13 @@ always @( * ) begin
 	end
 	else if(instr_op_i==35)begin // load word
 		RegWrite_o <= 1;
-		ALU_op_o   <= 3'b001;
+		ALU_op_o   <= 3'b101;
 		ALUSrc_o   <= 1;
 		RegDst_o   <= 0;
 		Branch_o   <= 0;
 		mem_write_o <= 0;
 		mem_read_o <= 1;
-		mem_to_reg <= 0; // 0: result from memory
+		mem_to_reg <= 1; // 0: result from memory
 		jump_o <= 0;
 		branch_type_o <= 2'b0;
 		jal_o <= 1'b0;
@@ -158,7 +158,7 @@ always @( * ) begin
 		Branch_o   <= 0;
 		mem_write_o <= 1;
 		mem_read_o <= 0;
-		mem_to_reg <= 1; // 1: result from alu 
+		mem_to_reg <= 0; // 1: result from alu 
 		jump_o <= 0;
 		branch_type_o <= 2'b0;
 		jal_o <= 1'b0;
