@@ -1,5 +1,8 @@
 # LAB3
 
+![](https://i.imgur.com/X3D4HKh.png)
+
+
 ## R type
 - [x] sll
 - [x] mul
