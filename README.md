@@ -1,5 +1,6 @@
 # LAB3
 
+[臺大的網站 對架構選寫有幫助](https://www.ntu.edu.sg/home/smitha/FYP_Gerald/rDatapath.html)
 ![](https://i.imgur.com/X3D4HKh.png)
 
 
