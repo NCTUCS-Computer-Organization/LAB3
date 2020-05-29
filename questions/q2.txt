@@ -1,0 +1,22 @@
+程式在執行時，通常會是有序的(sequential)，當今天呼叫了一個函數(function)，
+等該函數執行完後應該要回到原本的地方並繼續執行程式，這就是 jal 和 jr 的主要功能，
+執行 jal 的時候會先把原本的位置儲存起來，並讓 PC 指定到該函數的位置，
+等該函數執行完畢，就會使用 jr 讓 PC 回到原本的位置。
+
+以下是範例程式，做的事情為輸入值到 r2 中，執行 n 次，並把最大的結果存進 r1 裡面。
+
+addi $t1, $0, 0			//r1初始化為 0
+addi $t3, $0, input		//執行 n 次
+addi $t4, $0, 1			
+Loop:
+	addi $t2, $0, input	//輸入值進 r2
+	jal compare		//呼叫比較函數
+	subu $t3, $t3, $t4	//n--
+	bne $t3, $0, Loop	
+	j END
+compare:
+	slt $t5, $t1, $t2	//比較 r1 和 r2
+	blez $t5, Loop		//若 r1 >= r2 則不用換
+	addu $t1, $0, $t2	//若 r1 < r2 則 r1 = r2
+	jr $ra			//返回
+END:

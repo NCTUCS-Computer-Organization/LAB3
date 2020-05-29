@@ -1,0 +1,38 @@
+1. 其實bgtz 和 blez 都可以被 slt 和 bne 或 bne 替代，所以可以消去
+
+2. bne 和 beq 也是一體兩面的東西，所以也可消去其中一個
+
+3. lui 也可透過先把 imm 存進register中再使用 sll(Shift left logical)來代替，故也可消去
+
+4. ori 也可透過同上的方法再使用 or 來代替
+
+5. sltiu 同上，可用slt代替
+
+6. sra 和 srav 兩者都能夠互相替代，所以可擇一消去
+
+7. jal 也可用 jump 再加上對 $ra 做 add 來替代
+
+minimum instruction set : 
+  R type:	
+	Unsigned addition (addu)
+	Unsigned substraction (subu)
+	Bitwise and (and)
+	Bitwise or (or)
+	Set on less than (slt)
+	Arithmetic shift right (sra)
+	Shift left logical (sll)
+	Signed multiplication (mul)
+	Jump register (jr)
+  I type:
+	Add immediate (addi)
+	Branch on equal (beq)
+	Load word (lw)
+	Save word (sw)
+  R type:
+	Jump (j)
+
+advantages:
+  精簡化指令集，省去設計的麻煩
+
+disadvantages:
+  需要使用更多的指令去完成原本單一指令可做到的事情，增加執行時間與寫程式的複雜度

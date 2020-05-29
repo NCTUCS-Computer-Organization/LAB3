@@ -1,0 +1,5 @@
+先用slt判斷 rt 和 rs 的值的大小關係，並把結果存進 r1，若 r1 的值為 0，代表 rs >= rt，反之亦然。
+再用blez判斷 r1 的值即可，若為 0 則 PC += 4 + offset 。
+
+slt r1, rs, rt
+blez r1 offset
