@@ -2,8 +2,8 @@
 
 [臺大的網站 對架構選寫有幫助](https://www.ntu.edu.sg/home/smitha/FYP_Gerald/rDatapath.html)
 
+![](https://i.imgur.com/CVK7q3j.png)
 
-![](https://i.imgur.com/Skojgnx.png)
 
 
 
